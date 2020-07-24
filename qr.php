@@ -1,6 +1,7 @@
 <?php
 /* qr
  * ~ qr code generator
+ * ~ qr code detector as version 2.0.0 (july 24th 2020)
  * ~ extension for AI
  * authored by 9r3i
  * https://github.com/9r3i
@@ -8,9 +9,20 @@
  * require: qrLibs (AI package)
  */
 class qr{
-  const version='1.0.0';
-  const info='QR code generator.';
+  const version='2.0.0';
+  const info='QR code generator and detector.';
   private $loadedLibs=false;
+  /* read qr-file */
+  public function read(string $file){
+    /* check the given file -- must be image/png */
+    if(!is_file($file)||!preg_match('/\.png$/i',$file)){
+      return ai::error('Invalid file, the file must be image/png.');
+    }
+    /* load required functions */
+    require_once(LIBDIR.'Zxing/Common/customFunctions.php');
+    /* return as string text */
+    return new \Zxing\QrReader($file)->text();
+  }
   /* generate text to png
    * @parameters:
    *   $text   = string of text to be generated
@@ -20,10 +32,10 @@ class qr{
    *   $margin = int of margin; default: 5
    * @result: string of output file on success; string of error message on failed
    */
-  function png(string $text='',string $output='output.png',$level=3,$size=7,$margin=5){
+  public function png(string $text='',string $output='output.png',$level=3,$size=7,$margin=5){
     /* check text */
     if(empty($text)){
-      return ai::error('Require string text');
+      return ai::error('Require string text.');
     }
     /* load qr library */
     if(!$this->qrLibsLoad()){
@@ -77,7 +89,7 @@ class qr{
     return true;
   }
   /* get help */
-  function help(){
+  public function help(){
     $info=$this::info;
     $version=$this::version;
     return <<<EOD
@@ -88,9 +100,11 @@ Version {$version}
 
 Options:
   PNG    Generate text to png.
+  READ   Read QR-file from png.
 
 Scheme:
   $ AI QR PNG <text> [out:output.png] [level:3] [size:7] [margin:5]
+  $ AI QR READ <path/to/file.png>
   
 Example:
   $ AI QR PNG "https://github.com/9r3i/qr-libs"

@@ -425,13 +425,74 @@
   },
   "ext.qr":{
     "name":"qr",
-    "version":"1.0.0",
+    "version":"2.0.0",
     "type":"ext",
     "contains":[
       "qr.php"
     ],
     "requires":[
-      "qrLibs"
+      "qrLibs",
+        "ZxingQRCode"
+    ],
+    "authors":[
+      "Abu Ayyub"
+    ]
+  },
+  "ZxingQRCode":{
+    "name":"ZxingQRCode",
+    "version":"1.0.0",
+    "type":"lib",
+    "contains":[
+      "Zxing\/Binarizer.php",
+      "Zxing\/BinaryBitmap.php",
+      "Zxing\/ChecksumException.php",
+      "Zxing\/Common\/AbstractEnum.php",
+      "Zxing\/Common\/BitArray.php",
+      "Zxing\/Common\/BitMatrix.php",
+      "Zxing\/Common\/BitSource.php",
+      "Zxing\/Common\/CharacterSetECI.php",
+      "Zxing\/Common\/DecoderResult.php",
+      "Zxing\/Common\/DefaultGridSampler.php",
+      "Zxing\/Common\/Detector\/MathUtils.php",
+      "Zxing\/Common\/Detector\/MonochromeRectangleDetector.php",
+      "Zxing\/Common\/DetectorResult.php",
+      "Zxing\/Common\/GlobalHistogramBinarizer.php",
+      "Zxing\/Common\/GridSampler.php",
+      "Zxing\/Common\/HybridBinarizer.php",
+      "Zxing\/Common\/PerspectiveTransform.php",
+      "Zxing\/Common\/Reedsolomon\/GenericGF.php",
+      "Zxing\/Common\/Reedsolomon\/GenericGFPoly.php",
+      "Zxing\/Common\/Reedsolomon\/ReedSolomonDecoder.php",
+      "Zxing\/Common\/Reedsolomon\/ReedSolomonException.php",
+      "Zxing\/Common\/customFunctions.php",
+      "Zxing\/FormatException.php",
+      "Zxing\/GDLuminanceSource.php",
+      "Zxing\/IMagickLuminanceSource.php",
+      "Zxing\/LuminanceSource.php",
+      "Zxing\/NotFoundException.php",
+      "Zxing\/PlanarYUVLuminanceSource.php",
+      "Zxing\/QrReader.php",
+      "Zxing\/Qrcode\/Decoder\/BitMatrixParser.php",
+      "Zxing\/Qrcode\/Decoder\/DataBlock.php",
+      "Zxing\/Qrcode\/Decoder\/DataMask.php",
+      "Zxing\/Qrcode\/Decoder\/DecodedBitStreamParser.php",
+      "Zxing\/Qrcode\/Decoder\/Decoder.php",
+      "Zxing\/Qrcode\/Decoder\/ErrorCorrectionLevel.php",
+      "Zxing\/Qrcode\/Decoder\/FormatInformation.php",
+      "Zxing\/Qrcode\/Decoder\/Mode.php",
+      "Zxing\/Qrcode\/Decoder\/Version.php",
+      "Zxing\/Qrcode\/Detector\/AlignmentPattern.php",
+      "Zxing\/Qrcode\/Detector\/AlignmentPatternFinder.php",
+      "Zxing\/Qrcode\/Detector\/Detector.php",
+      "Zxing\/Qrcode\/Detector\/FinderPattern.php",
+      "Zxing\/Qrcode\/Detector\/FinderPatternFinder.php",
+      "Zxing\/Qrcode\/Detector\/FinderPatternInfo.php",
+      "Zxing\/Qrcode\/QRCodeReader.php",
+      "Zxing\/RGBLuminanceSource.php",
+      "Zxing\/Reader.php",
+      "Zxing\/ReaderException.php",
+      "Zxing\/Result.php",
+      "Zxing\/ResultPoint.php"
     ],
     "authors":[
       "Abu Ayyub"

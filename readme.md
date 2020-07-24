@@ -27,6 +27,7 @@ $ ai install ext.qr
 
 ```
 $ ai qr png <text>
+$ ai qr read <path/to/file.png>
 ```
 
 - Use ```$ ai qr help``` for more detail.
