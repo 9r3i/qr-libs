@@ -9,7 +9,7 @@
  * require: qrLibs (AI package)
  */
 class qr{
-  const version='2.0.0';
+  const version='2.0.1';
   const info='QR code generator and detector.';
   private $loadedLibs=false;
   /* read qr-file */
@@ -21,7 +21,7 @@ class qr{
     /* load required functions */
     require_once(LIBDIR.'Zxing/Common/customFunctions.php');
     /* return as string text */
-    return new \Zxing\QrReader($file)->text();
+    return (new \Zxing\QrReader($file))->text();
   }
   /* generate text to png
    * @parameters:
