@@ -6,22 +6,81 @@
  * authored by 9r3i
  * https://github.com/9r3i
  * started at august 26th 2019
- * require: qrLibs (AI package)
+ * require: - qrLibs (AI package)
+ *          - Zxing (july 24th 2020)
+ *          - ext.image (commercial package)
  */
 class qr{
-  const version='2.0.1';
+  const version='2.1.0';
   const info='QR code generator and detector.';
   private $loadedLibs=false;
   /* read qr-file */
   public function read(string $file){
-    /* check the given file -- must be image/png */
-    if(!is_file($file)||!preg_match('/\.png$/i',$file)){
-      return ai::error('Invalid file, the file must be image/png.');
+    /* check the given file */
+    if(!is_file($file)){
+      return ai::error('Require image file.');
+    }
+    /* check file type -- must be image/png */
+    if(!preg_match('/\.png$/i',$file)){
+      /* check image */
+      if(!preg_match('/\.(jpg|jpeg|gif|bmp|webp)$/i',$file,$akur)){
+        return ai::error('Invalid file, the file must be image.');
+      }
+      /* load image extension */
+      if(!ai::loadExts('image')){
+        return "NOTICE: Require ext.image to read besides png file.\r\n"
+              ."        To install: $ ai install ext.image";
+      }
+      /* export other type to png */
+      ai::interactiveSet(true);
+      $outFile=(new image)->export($file,'png');
+      ai::interactiveSet(false);
+      if(!$outFile||!is_file($outFile)){
+        return ai::error('Failed to export image file.');
+      }
+      /* set new file */
+      $file=$outFile;
     }
     /* load required functions */
     require_once(LIBDIR.'Zxing/Common/customFunctions.php');
-    /* return as string text */
-    return (new \Zxing\QrReader($file))->text();
+    /* get string text */
+    $output=(new \Zxing\QrReader($file))->text();
+    /* remove output file */
+    if(isset($outFile)&&is_file($outFile)){
+      @unlink($outFile);
+    }
+    /* return output */
+    return $output;
+  }
+  /* generate text to jpg */
+  public function jpg(string $text='',string $output='output.jpg',$level=3,$size=7,$margin=5){
+    /* load image extension */
+    if(!ai::loadExts('image')){
+      return "NOTICE: Require ext.image to create besides png file.\r\n"
+            ."        To install: $ ai install ext.image";
+    }
+    /* generate png first */
+    if(!preg_match('/\.(jpg|jpeg)$/i',$output)){
+      return ai::error('Output file must be jpg or jpeg.');
+    }
+    /* generate png first */
+    $pngOutput=preg_replace('/\.(jpg|jpeg)$/i','.png',$output);
+    /* generate png first */
+    $toPNG=$this->png($text,$pngOutput,$level,$size,$margin);
+    /* export to jpg */
+    ai::interactiveSet(true);
+    $jpgFile=(new image)->export($pngOutput,'jpg');
+    ai::interactiveSet(false);
+    /* remove png output */
+    @unlink($pngOutput);
+    /* check jpg file */
+    if(!$jpgFile||!is_file($jpgFile)){
+      return ai::error('Failed to export image file.');
+    }
+    /* rename to output file name */
+    @rename($jpgFile,$output);
+    /* return output file name */
+    return $output;
   }
   /* generate text to png
    * @parameters:
@@ -51,7 +110,7 @@ class qr{
     $margin=preg_match('/^\d+$/',$margin)?intval($margin):5;
     /* generate qr image/png */
     QRcode::png($text,$output,$level,$size,$margin);
-    /* return output file */
+    /* return output file name */
     return $output;
   }
   /* load qrLibs */
@@ -100,10 +159,12 @@ Version {$version}
 
 Options:
   PNG    Generate text to png.
-  READ   Read QR-file from png.
+  JPG    Generate text to jpg.
+  READ   Read QR-file from image file.
 
 Scheme:
   $ AI QR PNG <text> [out:output.png] [level:3] [size:7] [margin:5]
+  $ AI QR JPG <text> [out:output.jpg] [level:3] [size:7] [margin:5]
   $ AI QR READ <path/to/file.png>
   
 Example:
